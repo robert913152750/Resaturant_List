@@ -6,7 +6,6 @@ const port = 3000;
 
 //Require express-handlebars here
 const exphbs = require("express-handlebars");
-const restaurantList = require("./restaurant.json");
 
 //Setting static files
 app.use(express.static("public"));
@@ -14,6 +13,10 @@ app.use(express.static("public"));
 //setting template engine
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
+
+//setting body-parser
+bodyParser = require("body-parser");
+app.use(bodyParser.urlencoded({ extended: true }));
 
 //setting mongoose database
 const mongoose = require("mongoose");
@@ -37,18 +40,28 @@ db.once("open", () => {
 const Restaurant = require("./models/restauranrt");
 
 //Setting route
+//index
 app.get("/", (req, res) => {
-  res.render("index", { restaurants: restaurantList.results });
+  Restaurant.find()
+    .lean()
+    .exec((err, restaurants) => {
+      //catch data from Restaurant Model
+      if (err) return console.error(err);
+      return res.render("index", { restaurants: restaurants });
+    });
 });
-
+//show a page
 app.get("/restaurants/:restaurant_id", (req, res) => {
-  const restaurant = restaurantList.results.find(
-    restaurant => restaurant.id.toString() === req.params.restaurant_id
-  );
-  console.log(restaurant);
-  res.render("show", { restaurant: restaurant });
+  console.log(req.params);
+  Restaurant.findById(req.params.restaurant_id)
+    .lean()
+    .exec((err, restaurant) => {
+      if (err) return console.error(err);
+      console.log(restaurant);
+      return res.render("show", { restaurant: restaurant });
+    });
 });
-
+//search
 app.get("/search", (req, res) => {
   const keyword = req.query.keyword;
   const restaurants = restaurantList.results.filter(restaurants => {
