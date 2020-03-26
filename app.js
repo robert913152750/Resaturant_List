@@ -61,6 +61,16 @@ app.get("/restaurants/:restaurant_id", (req, res) => {
       return res.render("show", { restaurant: restaurant });
     });
 });
+//show edit-page
+app.get("/restaurants/:restaurant_id/edit", (req, res) => {
+  Restaurant.findById(req.params.restaurant_id)
+    .lean()
+    .exec((err, restaurant) => {
+      if (err) return console.error(err);
+      return res.render("edit", { restaurant: restaurant });
+    });
+});
+
 //search
 app.get("/search", (req, res) => {
   const keyword = req.query.keyword;
