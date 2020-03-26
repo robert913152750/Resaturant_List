@@ -39,6 +39,18 @@
                 {{this.rating}}
                 <i class="fas fa-star fa-xs"></i>
               </span>
+              <div class="row float-right mr-1">
+                <a class="col-sm" href="/restaurants/{{{this._id}}}/edit">
+                  <button type="button" class="btn btn-outline-info btn-sm">Edit</button>
+                </a>
+
+                <form action="/restaurants/{{{this._id}}}/delete" method="POST">
+                  <button type="submit" class="btn btn-outline-info col-sm btn-sm">Delete</button>
+                </form>
+
+              </div>
+
+
 
             </div>
           </div>
