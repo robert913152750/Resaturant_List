@@ -1,0 +1,88 @@
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Restaurant List</title>
+  <link rel="stylesheet" href="/stylesheets/bootstrap.css">
+  <link rel="stylesheet" href="/stylesheets/showStyle.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+    integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
+</head>
+
+<body>
+
+  <h1 class="mb-1 restaurant-show-title">新增餐廳</h1>
+  <div class="container">
+    <form action="/restaurants/create/new_page" method="POST">
+      <div class="row">
+        <div class="col-12 col-md-10 mx-auto">
+
+          <p class="mb-4">
+            <span class="text-secondary">
+              <i class="fas fa-utensils pr-2"></i>
+              名稱：
+            </span>
+            <input type="text" class="form-control" name="name">
+
+          </p>
+
+          <p class="mb-4">
+            <span class="text-secondary">
+              <i class="fas fa-utensils pr-2"></i>
+              類別：
+            </span>
+            <input type="text" class="form-control" name="category">
+
+          </p>
+
+          <p class="mb-4">
+            <span class="text-secondary">
+              <i class="fas fa-map-marker-alt pr-2"></i>
+              地址：
+            </span>
+            <input type="text" class="form-control" name="location">
+          </p>
+
+          <p class="mb-4">
+            <span class="text-secondary">
+              <i class="fas fa-location-arrow pr-2 fa-xs"></i>
+              Google_Map網址：
+            </span>
+            <input type="text" class="form-control" name="google_map">
+          </p>
+
+          <p class="mb-4">
+            <span class="text-secondary">
+              <i class="fas fa-mobile-alt pr-2"></i>
+              電話：
+            </span>
+            <input type="text" class="form-control" name="phone">
+          </p>
+
+          <p class="mb-4">
+            <span class="text-secondary">
+              <i class="fas fa-audio-description pr-1"></i>
+              敘述：
+            </span>
+            <textarea type="text" class="form-control" name="description"></textarea>
+          </p>
+
+          <p class="mb-4">
+            <span class="text-secondary">
+              <i class="fas fa-camera-retro"></i>
+              圖片網址：
+            </span>
+            <input type="text" class="form-control" name="image">
+          </p>
+
+          <button class="btn btn-outline-info col-sm btn-sm" type="submit">Save</button>
+
+
+        </div>
+      </div>
+
+    </form>
+
+  </div>
+</body>

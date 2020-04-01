@@ -82,7 +82,7 @@ app.post("/restaurants/:restaurant_id/edit", (req, res) => {
     restaurant.phone = req.body.phone;
     restaurant.description = req.body.description;
     restaurant.image = req.body.image;
-    // restaurant = req.body
+    // restaurant = req.body (this way can't work)
     console.log(restaurant);
     restaurant.save(err => {
       if (err) return console.error(err);
@@ -91,6 +91,40 @@ app.post("/restaurants/:restaurant_id/edit", (req, res) => {
   });
 });
 
+//show create page
+app.get("/restaurants/create/new_page", (req, res) => {
+  return res.render("create");
+});
+
+//create
+app.post("/restaurants/create/new_page", (req, res) => {
+  const newRs = new Restaurant({
+    name: req.body.name,
+    name_en: req.body.name_en,
+    category: req.body.category,
+    image: req.body.image,
+    location: req.body.location,
+    phone: req.body.phone,
+    google_map: req.body.google_map,
+    rating: req.body.rating,
+    description: req.body.description
+  });
+  newRs.save(err => {
+    if (err) return console.lerror(err);
+    return res.render("show", { restaurant: newRs });
+  });
+});
+
+//delete
+app.post("/restaurants/:restaurant_id/delete", (req, res) => {
+  Restaurant.findById(req.params.restaurant_id, (err, restaurant) => {
+    if (err) return console.error(err);
+    restaurant.remove(err => {
+      if (err) return console.error(err);
+      return res.redirect("/");
+    });
+  });
+});
 //search
 app.get("/search", (req, res) => {
   const keyword = req.query.keyword;
