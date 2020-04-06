@@ -1,11 +1,14 @@
 //Include express module and define server value
-
 const express = require("express");
 const app = express();
+
 const port = 3000;
 
 //Require express-handlebars here
 const exphbs = require("express-handlebars");
+
+//Require method-override
+const methodOverride = require("method-override");
 
 //Setting static files
 app.use(express.static("public"));
@@ -18,11 +21,14 @@ app.set("view engine", "handlebars");
 bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: true }));
 
+//setting method-override
+app.use(methodOverride("_method"));
+
 //setting mongoose database
 const mongoose = require("mongoose");
 mongoose.connect("mongodb://localhost/restaurant", {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
 });
 const db = mongoose.connection;
 
@@ -72,7 +78,7 @@ app.get("/restaurants/:restaurant_id/edit", (req, res) => {
 });
 
 //edit
-app.post("/restaurants/:restaurant_id/edit", (req, res) => {
+app.put("/restaurants/:restaurant_id", (req, res) => {
   Restaurant.findById(req.params.restaurant_id, (err, restaurant) => {
     if (err) return console.error(err);
     restaurant.name = req.body.name;
@@ -84,7 +90,7 @@ app.post("/restaurants/:restaurant_id/edit", (req, res) => {
     restaurant.image = req.body.image;
     // restaurant = req.body (this way can't work)
     console.log(restaurant);
-    restaurant.save(err => {
+    restaurant.save((err) => {
       if (err) return console.error(err);
       return res.redirect(`/restaurants/${req.params.restaurant_id}`);
     });
@@ -98,7 +104,7 @@ app.get("/restaurants/create/new_page", (req, res) => {
 
 //create
 app.post("/restaurants/create/new_page", (req, res) => {
-  const newRs = new Restaurant({
+  const restaurant = new Restaurant({
     name: req.body.name,
     name_en: req.body.name_en,
     category: req.body.category,
@@ -107,19 +113,19 @@ app.post("/restaurants/create/new_page", (req, res) => {
     phone: req.body.phone,
     google_map: req.body.google_map,
     rating: req.body.rating,
-    description: req.body.description
+    description: req.body.description,
   });
-  newRs.save(err => {
-    if (err) return console.lerror(err);
-    return res.render("show", { restaurant: newRs });
+  restaurant.save((err) => {
+    if (err) return console.error(err);
+    return res.render("show", { restaurant: restaurant });
   });
 });
 
 //delete
-app.post("/restaurants/:restaurant_id/delete", (req, res) => {
+app.delete("/restaurants/:restaurant_id/delete", (req, res) => {
   Restaurant.findById(req.params.restaurant_id, (err, restaurant) => {
     if (err) return console.error(err);
-    restaurant.remove(err => {
+    restaurant.remove((err) => {
       if (err) return console.error(err);
       return res.redirect("/");
     });
@@ -128,7 +134,7 @@ app.post("/restaurants/:restaurant_id/delete", (req, res) => {
 //search
 app.get("/search", (req, res) => {
   const keyword = req.query.keyword;
-  const restaurants = restaurantList.results.filter(restaurants => {
+  const restaurants = restaurantList.results.filter((restaurants) => {
     return restaurants.name.toLowerCase().includes(keyword.toLowerCase());
   });
   console.log(restaurants);
