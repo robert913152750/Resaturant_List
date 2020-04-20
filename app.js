@@ -48,6 +48,7 @@ const Restaurant = require("./models/restauranrt");
 //Setting route
 app.use("/", require("./routes/home"));
 app.use("/restaurants", require("./routes/restaurants"));
+app.use("/users", require("./routes/user"));
 
 //search
 app.get("/search", (req, res) => {

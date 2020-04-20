@@ -28,6 +28,7 @@ router.get("/:restaurant_id/edit", (req, res) => {
 router.put("/:restaurant_id", (req, res) => {
   Restaurant.findById(req.params.restaurant_id, (err, restaurant) => {
     if (err) return console.error(err);
+
     restaurant.name = req.body.name;
     restaurant.category = req.body.category;
     restaurant.location = req.body.location;
