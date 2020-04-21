@@ -1,14 +1,12 @@
 //Include express module and define server value
 const express = require("express");
 const app = express();
-
 const port = 3000;
 
-//Require express-handlebars here
+//Require middlewave
 const exphbs = require("express-handlebars");
-
-//Require method-override
 const methodOverride = require("method-override");
+const session = require("express-session");
 
 //Setting static files
 app.use(express.static("public"));
@@ -41,6 +39,15 @@ db.once("open", () => {
   //connect success
   console.log("mongodb connected");
 });
+
+//setting session
+app.use(
+  session({
+    secret: "im robert cai",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
 
 //require Restaurant model
 const Restaurant = require("./models/restauranrt");
