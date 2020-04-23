@@ -7,6 +7,7 @@ const port = 3000;
 const exphbs = require("express-handlebars");
 const methodOverride = require("method-override");
 const session = require("express-session");
+const passport = require("passport");
 
 //Setting static files
 app.use(express.static("public"));
@@ -48,6 +49,19 @@ app.use(
     saveUninitialized: true,
   })
 );
+
+//setting passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+//require passport config
+require("./config/passport");
+
+//登入後可以取得使用者的資訊方便我們在 view 裡面直接使用
+app.use((req, res, next) => {
+  res.locals.user = req.user;
+  next();
+});
 
 //require Restaurant model
 const Restaurant = require("./models/restauranrt");
