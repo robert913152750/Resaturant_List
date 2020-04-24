@@ -3,30 +3,30 @@ const mongoose = require("mongoose");
 const User = require("../models/user");
 
 module.exports = (passport) => {
-  passport.use;
-  new LocalStrategy({ usernameField: "email" }, (email, password, done) => {
-    User.findOne({
-      email: email,
-    }).then((user) => {
-      if (!user) {
-        return done(null, false, { message: "That email is not registered" });
-      }
-      if (user.password != password) {
-        return done(null, false, { message: "Email or Passpord incorreect" });
-      }
-      return done(null, user);
-    });
+  passport.use(
+    new LocalStrategy({ usernameField: "email" }, (email, password, done) => {
+      User.findOne({
+        email: email,
+      }).then((user) => {
+        if (!user) {
+          return done(null, false, { message: "That email is not registered" });
+        }
+        if (user.password != password) {
+          return done(null, false, { message: "Email or Password incorreect" });
+        }
+        return done(null, user);
+      });
+    })
+  );
+  passport.serializeUser((user, done) => {
+    done(null, user.id);
+  });
+
+  passport.deserializeUser((id, done) => {
+    User.findById(id)
+      .lean()
+      .exec((err, user) => {
+        done(err, user);
+      });
   });
 };
-
-passport.serializeUser((user, done) => {
-  done(null, user.id);
-});
-
-passport.deserializeUser((id, done) => {
-  User.findById(id)
-    .lean()
-    .exec((err, user) => {
-      done(err, user);
-    });
-});

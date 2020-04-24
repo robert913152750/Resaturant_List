@@ -3,40 +3,40 @@ const Schema = mongoose.Schema;
 const restaurantSchema = new Schema({
   name: {
     type: String,
-    require: true
+    require: true,
   },
   name_en: {
     type: String,
-    require: true
+    require: true,
   },
   category: {
     type: String,
-    require: true
+    require: true,
   },
   image: {
     type: String,
-    require: true
+    require: true,
   },
   location: {
     type: String,
-    require: true
+    require: true,
   },
   phone: {
     type: String,
-    require: true
+    require: true,
   },
   google_map: {
     type: String,
-    require: true
+    require: true,
   },
   rating: {
     type: Number,
-    require: true
+    require: true,
   },
   description: {
     type: String,
-    require: true
-  }
+    require: true,
+  },
 });
 
 module.exports = mongoose.model("Restaurant", restaurantSchema);

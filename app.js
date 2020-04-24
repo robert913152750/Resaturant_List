@@ -55,7 +55,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //require passport config
-require("./config/passport");
+require("./config/passport")(passport);
 
 //登入後可以取得使用者的資訊方便我們在 view 裡面直接使用
 app.use((req, res, next) => {
@@ -64,7 +64,7 @@ app.use((req, res, next) => {
 });
 
 //require Restaurant model
-const Restaurant = require("./models/restauranrt");
+const Restaurant = require("./models/restaurant");
 
 //Setting route
 app.use("/", require("./routes/home"));

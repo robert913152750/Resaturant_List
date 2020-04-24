@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Restaurant = require("../models/restauranrt");
+const Restaurant = require("../models/restaurant");
 
 // setting /restaurants router
 //show a page
