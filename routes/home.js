@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const Restaurant = require("../models/restaurant");
-
+const { authenticated } = require("../config/auth");
 //index
-router.get("/", (req, res) => {
+router.get("/", authenticated, (req, res) => {
   Restaurant.find()
     .lean()
     .exec((err, restaurants) => {

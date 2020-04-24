@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const Restaurant = require("../models/restaurant");
-
+const { authenticated } = require("../config/auth");
 // setting /restaurants router
 //show a page
-router.get("/:restaurant_id", (req, res) => {
+router.get("/:restaurant_id", authenticated, (req, res) => {
   console.log(req.params);
   Restaurant.findById(req.params.restaurant_id)
     .lean()
@@ -15,7 +15,7 @@ router.get("/:restaurant_id", (req, res) => {
     });
 });
 //show edit-page
-router.get("/:restaurant_id/edit", (req, res) => {
+router.get("/:restaurant_id/edit", authenticated, (req, res) => {
   Restaurant.findById(req.params.restaurant_id)
     .lean()
     .exec((err, restaurant) => {
@@ -25,7 +25,7 @@ router.get("/:restaurant_id/edit", (req, res) => {
 });
 
 //edit
-router.put("/:restaurant_id", (req, res) => {
+router.put("/:restaurant_id", authenticated, (req, res) => {
   Restaurant.findById(req.params.restaurant_id, (err, restaurant) => {
     if (err) return console.error(err);
 
@@ -46,12 +46,12 @@ router.put("/:restaurant_id", (req, res) => {
 });
 
 //show create page
-router.get("/create/new_page", (req, res) => {
+router.get("/create/new_page", authenticated, (req, res) => {
   return res.render("create");
 });
 
 //create
-router.post("/create/new_page", (req, res) => {
+router.post("/create/new_page", authenticated, (req, res) => {
   const restaurant = new Restaurant({
     name: req.body.name,
     name_en: req.body.name_en,
@@ -70,7 +70,7 @@ router.post("/create/new_page", (req, res) => {
 });
 
 //delete
-router.delete("/:restaurant_id/delete", (req, res) => {
+router.delete("/:restaurant_id/delete", authenticated, (req, res) => {
   Restaurant.findById(req.params.restaurant_id, (err, restaurant) => {
     if (err) return console.error(err);
     restaurant.remove((err) => {
