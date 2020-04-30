@@ -6,7 +6,7 @@ const { authenticated } = require("../config/auth");
 //show a page
 router.get("/:restaurant_id", authenticated, (req, res) => {
   console.log(req.params);
-  Restaurant.findById(req.params.restaurant_id)
+  Restaurant.findOne({ _id: req.params.restaurant_id, userId: req.user._id })
     .lean()
     .exec((err, restaurant) => {
       if (err) return console.error(err);
@@ -16,7 +16,7 @@ router.get("/:restaurant_id", authenticated, (req, res) => {
 });
 //show edit-page
 router.get("/:restaurant_id/edit", authenticated, (req, res) => {
-  Restaurant.findById(req.params.restaurant_id)
+  Restaurant.findOne({ _id: req.params.restaurant_id, userId: req.user._id })
     .lean()
     .exec((err, restaurant) => {
       if (err) return console.error(err);
@@ -26,23 +26,26 @@ router.get("/:restaurant_id/edit", authenticated, (req, res) => {
 
 //edit
 router.put("/:restaurant_id", authenticated, (req, res) => {
-  Restaurant.findById(req.params.restaurant_id, (err, restaurant) => {
-    if (err) return console.error(err);
-
-    restaurant.name = req.body.name;
-    restaurant.category = req.body.category;
-    restaurant.location = req.body.location;
-    restaurant.google_map = req.body.google_map;
-    restaurant.phone = req.body.phone;
-    restaurant.description = req.body.description;
-    restaurant.image = req.body.image;
-    // restaurant = req.body (this way can't work)
-    console.log(restaurant);
-    restaurant.save((err) => {
+  Restaurant.findOne(
+    { _id: req.params.restaurant_id, userId: req.user._id },
+    (err, restaurant) => {
       if (err) return console.error(err);
-      return res.redirect(`/restaurants/${req.params.restaurant_id}`);
-    });
-  });
+
+      restaurant.name = req.body.name;
+      restaurant.category = req.body.category;
+      restaurant.location = req.body.location;
+      restaurant.google_map = req.body.google_map;
+      restaurant.phone = req.body.phone;
+      restaurant.description = req.body.description;
+      restaurant.image = req.body.image;
+      // restaurant = req.body (this way can't work)
+      console.log(restaurant);
+      restaurant.save((err) => {
+        if (err) return console.error(err);
+        return res.redirect(`/restaurants/${req.params.restaurant_id}`);
+      });
+    }
+  );
 });
 
 //show create page
@@ -62,6 +65,7 @@ router.post("/create/new_page", authenticated, (req, res) => {
     google_map: req.body.google_map,
     rating: req.body.rating,
     description: req.body.description,
+    userId: req.user._id,
   });
   restaurant.save((err) => {
     if (err) return console.error(err);
@@ -71,13 +75,16 @@ router.post("/create/new_page", authenticated, (req, res) => {
 
 //delete
 router.delete("/:restaurant_id/delete", authenticated, (req, res) => {
-  Restaurant.findById(req.params.restaurant_id, (err, restaurant) => {
-    if (err) return console.error(err);
-    restaurant.remove((err) => {
+  Restaurant.findOne(
+    { _id: req.params.restaurant_id, userId: req.user._id },
+    (err, restaurant) => {
       if (err) return console.error(err);
-      return res.redirect("/");
-    });
-  });
+      restaurant.remove((err) => {
+        if (err) return console.error(err);
+        return res.redirect("/");
+      });
+    }
+  );
 });
 
 //export
