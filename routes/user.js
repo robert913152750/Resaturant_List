@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
 const passport = require("passport");
+const bcrypt = require("bcryptjs");
 
 //登入頁面
 router.get("/login", (req, res) => {
@@ -26,28 +27,41 @@ router.post("/register", (req, res) => {
   const { name, email, password, password2 } = req.body;
   User.findOne({ email: email }).then((user) => {
     if (user) {
-      // 如果 email 已經存在的話，將不能送出，並回到註冊表單頁面
+      // 檢查 email 是否存在
       console.log("User already exists");
       res.render("register", {
+        // 使用者已經註冊過
         name,
         email,
         password,
         password2,
       });
     } else {
-      // 如果 email 不存在就新增使用者
-      // 新增完成後導回首頁
       const newUser = new User({
+        // 如果不存在就直接新增
         name,
         email,
         password,
       });
-      newUser
-        .save()
-        .then((user) => {
-          res.redirect("/");
+      // 用 bcrypt 處理密碼後，再把它儲存起來
+
+      bcrypt.genSalt(10, (
+        err,
+        salt // 先用 genSalt 產生「鹽」，第一個參數是複雜度係數，預設值是 10
+      ) =>
+        bcrypt.hash(newUser.password, salt, (err, hash) => {
+          // 再用 hash 把鹽跟使用者的密碼配再一起，然後產生雜湊處理後的 hash
+          if (err) throw err;
+          newUser.password = hash;
+
+          newUser
+            .save()
+            .then((user) => {
+              res.redirect("/");
+            })
+            .catch((err) => console.log(err));
         })
-        .catch((err) => console.log(err));
+      );
     }
   });
 });
