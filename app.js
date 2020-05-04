@@ -3,6 +3,11 @@ const express = require("express");
 const app = express();
 const port = 3000;
 
+//判別開發環境
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
+
 //Require middlewave
 const exphbs = require("express-handlebars");
 const methodOverride = require("method-override");
@@ -72,6 +77,7 @@ const Restaurant = require("./models/restaurant");
 app.use("/", require("./routes/home"));
 app.use("/restaurants", require("./routes/restaurants"));
 app.use("/users", require("./routes/user"));
+app.use("/auth", require("./routes/auths"));
 
 //search
 app.get("/search", (req, res) => {
