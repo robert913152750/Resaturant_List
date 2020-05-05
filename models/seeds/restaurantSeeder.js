@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
-const Restaurant = require("../restauranrt");
+const Restaurant = require("../restaurant");
 const restaurantList = require("./restaurant.json");
 mongoose.connect("mongodb://localhost/restaurant", {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
 });
 
 const db = mongoose.connection;
@@ -25,7 +25,7 @@ db.once("open", () => {
       phone: list[i].phone,
       google_map: list[i].google_map,
       rating: list[i].rating,
-      description: list[i].description
+      description: list[i].description,
     });
   }
 });

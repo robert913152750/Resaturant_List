@@ -8,7 +8,10 @@ if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
 }
 
-//Require middlewave
+//require connect-flash
+const flash = require("connect-flash");
+
+//Require middleware
 const exphbs = require("express-handlebars");
 const methodOverride = require("method-override");
 const session = require("express-session");
@@ -63,10 +66,17 @@ app.use(passport.session());
 //require passport config
 require("./config/passport")(passport);
 
+//use connect flash
+app.use(flash());
+
 //登入後可以取得使用者的資訊方便我們在 view 裡面直接使用
 app.use((req, res, next) => {
   res.locals.user = req.user;
   res.locals.isAuthenticated = req.isAuthenticated();
+
+  //新增兩個 flash message 變數
+  res.locals.success_msg = req.flash("success_msg");
+  res.locals.warning_msg = req.flash("warning_msg");
   next();
 });
 
