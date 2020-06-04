@@ -88,16 +88,7 @@ app.use("/", require("./routes/home"));
 app.use("/restaurants", require("./routes/restaurants"));
 app.use("/users", require("./routes/user"));
 app.use("/auth", require("./routes/auths"));
-
-//search
-app.get("/search", (req, res) => {
-  const keyword = req.query.keyword;
-  const restaurants = restaurantList.results.filter((restaurants) => {
-    return restaurants.name.toLowerCase().includes(keyword.toLowerCase());
-  });
-  console.log(restaurants);
-  res.render("index", { restaurants: restaurants });
-});
+app.use("/search", require("./routes/search"));
 //Listen
 app.listen(port, () => {
   console.log(`Express is listening on http;//localhost/${port}`);

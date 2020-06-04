@@ -84,5 +84,5 @@ db.once("open", () => {
       });
     }
   }
-  console.log("Seeder had alraedy finsh");
+  console.log("Seeder had already finish");
 });

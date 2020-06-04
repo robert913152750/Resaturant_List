@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Restaurant = require("../models/restaurant");
 const { authenticated } = require("../config/auth");
-// setting /restaurants router
+// setting restaurants router
 //show a page
 router.get("/:restaurant_id", authenticated, (req, res) => {
   console.log(req.params);
@@ -24,23 +24,18 @@ router.get("/:restaurant_id/edit", authenticated, (req, res) => {
     });
 });
 
-//search
-router.post("/search", authenticated, (req, res) => {
-  const keyword = req.query.keyword;
-  const restaurantName = Restaurant;
-});
-
-// //app.get("/search", (req, res) => {
-// const keyword = req.query.keyword;
-// const restaurantName = restaurantList.results.filter(restaurant => {
-//   return restaurant.name.toLowerCase().includes(keyword.toLowerCase());
-// });
-// const restaurantNameCategory = restaurantList.results.filter(restaurant => {
-//   return restaurant.category.toLowerCase().includes(keyword.toLowerCase());
-// });
-// const restaurants = restaurantName.concat(restaurantNameCategory);
-// console.log(restaurants);
-// res.render("index", { restaurants: restaurants, keyword: keyword });
+// //search
+// router.post("/search", authenticated, (req, res) => {
+//   Restaurant.find((err, restaurants) => {
+//     const keyword = req.body.keyword;
+//     const hasStr = (target, str) =>
+//       target.toLowerCase().includes(str.toLowerCase());
+//     if (err) console.log(err);
+//     const restaurant = restaurants.filter(({ name, name_en, category }) => {
+//       return [name, name_en, category].some((str) => hasStr(str, keyword));
+//     });
+//     return res.render("index", { restaurants: restaurant });
+//   });
 // });
 
 //edit
