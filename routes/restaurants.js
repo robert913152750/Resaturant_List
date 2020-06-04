@@ -24,6 +24,25 @@ router.get("/:restaurant_id/edit", authenticated, (req, res) => {
     });
 });
 
+//search
+router.post("/search", authenticated, (req, res) => {
+  const keyword = req.query.keyword;
+  const restaurantName = Restaurant;
+});
+
+// //app.get("/search", (req, res) => {
+// const keyword = req.query.keyword;
+// const restaurantName = restaurantList.results.filter(restaurant => {
+//   return restaurant.name.toLowerCase().includes(keyword.toLowerCase());
+// });
+// const restaurantNameCategory = restaurantList.results.filter(restaurant => {
+//   return restaurant.category.toLowerCase().includes(keyword.toLowerCase());
+// });
+// const restaurants = restaurantName.concat(restaurantNameCategory);
+// console.log(restaurants);
+// res.render("index", { restaurants: restaurants, keyword: keyword });
+// });
+
 //edit
 router.put("/:restaurant_id", authenticated, (req, res) => {
   Restaurant.findOne(
@@ -37,6 +56,7 @@ router.put("/:restaurant_id", authenticated, (req, res) => {
       restaurant.google_map = req.body.google_map;
       restaurant.phone = req.body.phone;
       restaurant.description = req.body.description;
+      restaurant.rating = req.body.rating;
       restaurant.image = req.body.image;
       // restaurant = req.body (this way can't work)
       console.log(restaurant);
