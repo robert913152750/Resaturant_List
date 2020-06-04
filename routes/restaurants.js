@@ -24,20 +24,6 @@ router.get("/:restaurant_id/edit", authenticated, (req, res) => {
     });
 });
 
-// //search
-// router.post("/search", authenticated, (req, res) => {
-//   Restaurant.find((err, restaurants) => {
-//     const keyword = req.body.keyword;
-//     const hasStr = (target, str) =>
-//       target.toLowerCase().includes(str.toLowerCase());
-//     if (err) console.log(err);
-//     const restaurant = restaurants.filter(({ name, name_en, category }) => {
-//       return [name, name_en, category].some((str) => hasStr(str, keyword));
-//     });
-//     return res.render("index", { restaurants: restaurant });
-//   });
-// });
-
 //edit
 router.put("/:restaurant_id", authenticated, (req, res) => {
   Restaurant.findOne(
