@@ -33,7 +33,7 @@ app.use(methodOverride("_method"));
 
 //setting mongoose database
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost/restaurant", {
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/restaurant", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
@@ -90,6 +90,6 @@ app.use("/users", require("./routes/user"));
 app.use("/auth", require("./routes/auths"));
 app.use("/search", require("./routes/search"));
 //Listen
-app.listen(port, () => {
-  console.log(`Express is listening on http;//localhost/${port}`);
+app.listen(process.env.PORT || port, () => {
+  console.log("App is running");
 });

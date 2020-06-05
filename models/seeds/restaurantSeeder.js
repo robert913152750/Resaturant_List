@@ -5,7 +5,7 @@ const userList = require("./user.json");
 const restaurantList = require("./restaurant.json");
 const bcrypt = require("bcryptjs");
 
-mongoose.connect("mongodb://localhost/restaurant", {
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/restaurant", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
